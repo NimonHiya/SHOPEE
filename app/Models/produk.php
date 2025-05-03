@@ -7,10 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Produk extends Model
 {
-    public function produk()
+    use HasFactory;
+
+    // Fields that are mass assignable
+    protected $fillable = ['kode_produk', 'nama', 'harga', 'stok', 'id_kategori', 'photo'];
+
+    // Define relationship with Kategori model
+    public function kategori()
     {
-        return $this->belongsTo('Produk::class');
+        return $this->belongsTo(Kategori::class, 'id_kategori');
     }
-    // use HasFactory;
-    protected $fillable = ['kode_produk', 'nama', 'harga'];
+
+    // Optionally, add an accessor or mutator for the photo
+    public function getPhotoUrlAttribute()
+    {
+        return asset('storage/' . $this->photo);
+    }
 }
